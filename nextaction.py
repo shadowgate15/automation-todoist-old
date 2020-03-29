@@ -20,7 +20,7 @@ def main():
     parser.add_argument('-d', '--delay', help='Specify the delay in seconds between syncs', default=5, type=int)
     parser.add_argument('--debug', help='Enable debugging', action='store_true')
     parser.add_argument('--inbox', help='The method the Inbox project should be processed',
-                        default='parallel', choices=['parallel', 'serial'])
+                        default='parallel', choices=['parallel', 'serial', 'none'])
     parser.add_argument('--parallel_suffix', default='.')
     parser.add_argument('--serial_suffix', default='_')
     parser.add_argument('--hide_future', help='Hide future dated next actions until the specified number of days',
@@ -66,6 +66,8 @@ def main():
         """Identifies how a project should be handled."""
         name = project_object['name'].strip()
         if name == 'Inbox':
+            if args.inbox == 'none':
+                return None
             return args.inbox
         elif name[-1] == args.parallel_suffix:
             return 'parallel'
